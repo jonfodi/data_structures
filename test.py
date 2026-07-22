@@ -28,7 +28,8 @@ events = {
     "logout":   [10, 200, 500],
 }
 
-
+# function for mutating data
+# this is where you'd keep all your DS up to date 
 def record(event_type, timestamp):
     if event_type in events:
         events[event_type].append(timestamp)
@@ -42,11 +43,10 @@ def count(event_type) -> int:
     # return len(timestamps) - bisect_left(timestamps, CUTOFF)
 
 
-def total_count() -> int:
-    return sum(count(event_type) for event_type in events)
+# def total_count() -> int:
+#     return sum(count(event_type) for event_type in events)
 
 
 print(count("login"))     # 3  -> 720, 800, 950
 print(count("purchase"))  # 3  -> all of them
 print(count("logout"))    # 0  -> none of them
-print(total_count())      # 8
