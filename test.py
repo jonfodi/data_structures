@@ -39,11 +39,11 @@ def record(event_type, timestamp):
 
 def count(event_type) -> int:
     timestamps = events.get(event_type, [])
-    count = 0 
-    for timestamp in timestamps:
-        if timestamp >= CUTOFF:
-            count += 1
-    return count 
+    # count = 0 
+    # for timestamp in timestamps:
+    #     if timestamp >= CUTOFF:
+    #         count += 1
+    # return count 
 
     # print(bisect_left(timestamps, CUTOFF))
     # return len(timestamps) - bisect_left(timestamps, CUTOFF)
