@@ -39,14 +39,19 @@ def record(event_type, timestamp):
 
 def count(event_type) -> int:
     timestamps = events.get(event_type, [])
+
+    
     # count = 0 
     # for timestamp in timestamps:
     #     if timestamp >= CUTOFF:
     #         count += 1
     # return count 
-
+    # this array is sorted in ASC order (because were appending new events as they come in)
+    # therefore its MONOTOMIC. all answers are false until a FLIP where they become all TRUE 
+    # bisect LEFT means count all the elements that would not be in the cutoff 
+    # then subtract from total length to get the elements in the cutoff
     # print(bisect_left(timestamps, CUTOFF))
-    # return len(timestamps) - bisect_left(timestamps, CUTOFF)
+    return len(timestamps) - bisect_left(timestamps, CUTOFF)
 
 
 # def total_count() -> int:
