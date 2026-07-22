@@ -39,7 +39,13 @@ def record(event_type, timestamp):
 
 def count(event_type) -> int:
     timestamps = events.get(event_type, [])
-    print(bisect_left(timestamps, CUTOFF))
+    count = 0 
+    for timestamp in timestamps:
+        if timestamp >= CUTOFF:
+            count += 1
+    return count 
+
+    # print(bisect_left(timestamps, CUTOFF))
     # return len(timestamps) - bisect_left(timestamps, CUTOFF)
 
 
@@ -48,5 +54,3 @@ def count(event_type) -> int:
 
 
 print(count("login"))     # 3  -> 720, 800, 950
-print(count("purchase"))  # 3  -> all of them
-print(count("logout"))    # 0  -> none of them
