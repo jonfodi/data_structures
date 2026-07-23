@@ -1,9 +1,32 @@
 from bisect import bisect_left
 from heapq import heappush, heappop
+from collections import defaultdict
 
-NOW = 1000
-WINDOW = 5 * 60          # 300
-CUTOFF = NOW - WINDOW    # 700
+class ViewTracker:
+    def __init__(self, window=300):
+        self.window = window
+        self.views = defaultdict(list)
+        self.total_views = []
+
+    def record(self, page_id, ts):
+        self.views[page_id].append(ts)
+        self.total_views.append(ts)
+
+    def count_in_window(self, page_id, now):
+        ts = self.views.get(page_id, [])
+        return len(ts) - bisect_left(ts, now - self.window)
+
+    def top_k(self, k, now):
+        heap = []
+        for page_id in self.views:
+            heappush(heap, (self.count_in_window(page_id, now), page_id))
+            if len(heap) > k:
+                heappop(heap)
+        return sorted(heap, reverse=True)
+
+    def total_in_window(self, now):
+        return len(self.total_views) - bisect_left(self.total_views, now - self.window)
+
 
 views = {
     #                <-- older ------------------ newer -->
@@ -13,38 +36,14 @@ views = {
     "about":    [10, 200, 500],                        # 0 in window
     "blog":     [705, 800, 850, 990],                  # 4 in window
 }
-total_count = [5, 60, 720, 800, 900, 945, 955]
 
-def record(page_id, timestamp):
-    if page_id in views:
-        views[page_id].append(timestamp)
-    else:
-        views[page_id] = [timestamp]
-    
-    total_count.append(timestamp)
+tracker = ViewTracker()
 
-# this is for when your data is monotomic. consecutive values (i0 -> i1 -> i2) are false until they're all true. 
-# the flip point is the cutoff
-# since the indicies of the timestamp list implicitly carry the time relation, all timestamps will be within 5 minutes once the first index > 5 minutes is hit
-def count(page_id) -> int:
-    timestamps = views.get(page_id, [])
-    return len(timestamps) - bisect_left(timestamps, CUTOFF)
+for page_id, timestamps in views.items():
+    for ts in timestamps:
+        tracker.record(page_id, ts)
 
+tracker.total_views.sort()
 
-def top_k(k) -> list:
-    heap = []
-    for page_id in views:
-        heappush(heap, (count(page_id), page_id))
-        print(heap)
-        if len(heap) > k:
-            heappop(heap)
-            print(heap)
-    return sorted(heap, reverse=True)
-
-def total_number_events(CUTOFF):
-    return len(total_count) - bisect_left(total_count, CUTOFF)
-
-res = top_k(3)
-print("result = ")
-print(res)
-print(total_number_events(CUTOFF))
+print(tracker.top_k(3, now=1000))          # [(5, 'home'), (4, 'blog'), (3, 'docs')]
+print(tracker.total_in_window(now=1000))   # 14
