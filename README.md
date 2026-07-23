@@ -27,6 +27,9 @@ if your data lives somewhere centralized (like a DB), the application and all it
 
 # classes 
 - useful for having multiple instances of the same thing(?)
+- if you declare list [] at top of file, you're sharing data for different implementations
+- a class gives you as many lists [] and all associated data structures + methods in isolation 
+
 # good little tidbits 
 - the tiebreak is the second element when sorting tuples in python 
     - you can add a second data point to tiebreak on, but this makes the tuple 1 element bigger (data_1, tiebreak, data_2)
