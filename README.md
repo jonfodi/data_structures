@@ -17,3 +17,7 @@ examples:
 you may be working with data that makes sense to have in a list. but if you need to reference the unique ID for that data, you'll need both representations (the dict and the list) 
 - this is so you can efficiently work with the data and maintain the key/value relationship 
 
+
+# good little tidbits 
+- the tiebreak is the second element when sorting tuples in python 
+    - you can add a second data point to tiebreak on, but this makes the tuple 1 element bigger (data_1, tiebreak, data_2)
