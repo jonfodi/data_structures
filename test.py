@@ -53,6 +53,10 @@ def count(event_type) -> int:
     # print(bisect_left(timestamps, CUTOFF))
     return len(timestamps) - bisect_left(timestamps, CUTOFF)
 
+def find_event_with_most_timestamps() -> str: 
+    longest = ''
+    max_len = 0 
+    for 
 
 # def total_count() -> int:
 #     return sum(count(event_type) for event_type in events)
