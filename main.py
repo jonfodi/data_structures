@@ -1,4 +1,13 @@
 from view_tracker import ViewTracker
+from factory import make_tracker
+
+
+def print_summary(tracker: ViewTracker, now: int):
+    print(tracker.top_k(3, now=now))
+    print(tracker.total_in_window(now=now))
+
+
+tracker = make_tracker(redis_client=None)
 
 views = {
     #                <-- older ------------------ newer -->
@@ -9,14 +18,8 @@ views = {
     "blog":     [705, 800, 850, 990],                  # 4 in window
 }
 
-tracker = ViewTracker()
-
 for page_id, timestamps in views.items():
     for ts in timestamps:
         tracker.record(page_id, ts)
 
-tracker.total_views.sort()
-
-print(tracker.top_k(3, now=1000))          # [(5, 'home'), (4, 'blog'), (3, 'docs')]
-print(tracker.total_in_window(now=1000))   # 14
-print(tracker.least_number_views)
+print_summary(tracker, now=1000)
