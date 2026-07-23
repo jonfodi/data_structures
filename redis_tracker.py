@@ -20,3 +20,12 @@ class RedisViewTracker(ViewTracker):
 
     def total_in_window(self, now):
         return self.redis.zcount("views:__total__", now - self.window, now)
+    
+    def total_views_of_page(self, page_id) -> int: 
+        pass
+
+    def all_views(self) -> int: 
+        pass
+
+    def least_number_views(self, page_id) -> tuple: 
+        pass

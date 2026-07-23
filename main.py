@@ -22,4 +22,7 @@ for page_id, timestamps in views.items():
     for ts in timestamps:
         tracker.record(page_id, ts)
 
-print_summary(tracker, now=1000)
+# print_summary(tracker, now=1000)
+
+(views, page) = tracker.least_number_views()
+print(f"{page} has the least number of views with: {views}")
