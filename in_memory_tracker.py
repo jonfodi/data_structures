@@ -10,8 +10,7 @@ class InMemoryViewTracker(ViewTracker):
         self.window = window
         self.page_views = defaultdict(list) # { page_id: [timestamps] }
         self.total_views = []
-        self.heap = []
-
+        
     def record(self, page_id, ts):
         self.page_views[page_id].append(ts)
         insort(self.total_views, ts)
