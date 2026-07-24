@@ -22,3 +22,6 @@ class ViewTracker(ABC):
 
     @abstractmethod
     def least_number_views(self, page_id) -> tuple: ...
+
+    @abstractmethod
+    def least_k(self) -> list: ...

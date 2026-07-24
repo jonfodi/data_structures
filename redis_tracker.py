@@ -29,3 +29,6 @@ class RedisViewTracker(ViewTracker):
 
     def least_number_views(self, page_id) -> tuple: 
         pass
+        
+    def least_k(self, k, now) -> list: 
+        pass
