@@ -22,10 +22,17 @@ if __name__ == "__main__":
         for ts in timestamps:
             tracker.record(page_id, ts)
 
-    print(tracker.top_k(3, now=now))
-    print(tracker.total_in_window(now=now))
+    # print(tracker.top_k(3, now=now))
+    # print(tracker.total_in_window(now=now))
+
+    result = tracker.top_k(3, 1000)
+    for (views, page) in result:
+        count = 1
+        print(f"{page} is the number {count} of views with: {views}")
+        count += 1
 
     (views, page) = tracker.least_number_views()
     print(f"{page} has the least number of views with: {views}")
 
     least_views = tracker.least_k(3, 1000)
+    print(least_views)

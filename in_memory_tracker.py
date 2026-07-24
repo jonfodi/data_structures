@@ -35,16 +35,22 @@ class InMemoryViewTracker(ViewTracker):
             heappush(heap, (self.count_in_window(page_id, now), page_id))
             if len(heap) > k:
                 heappop(heap)
-            return sorted(heap, reverse=True)
+        return sorted(heap, reverse=True)
 
     def least_k(self, k, now) -> list:
-        res = []
+        # res = []
+        # for page_id in self.page_views:
+        #     res.append((self.count_in_window(page_id, now), page_id))
+        #     res = sorted(res)
+        #     if len(res) > k:
+        #         res.pop()
+        # return res
+        heap = []
         for page_id in self.page_views:
-            res.append((self.count_in_window(page_id, now), page_id))
-            res = sorted(res)
-            if len(res) > k:
-                res.pop()
-        return res
+            heappush(heap, (-self.count_in_window(page_id, now), page_id))
+            if len(heap) > k:
+                heappop(heap)
+        return sorted((-count, page_id) for count, page_id in heap)
         
     def total_in_window(self, now):
         return len(self.total_views) - bisect_left(self.total_views, now - self.window)
