@@ -10,22 +10,24 @@ class InMemoryViewTracker(ViewTracker):
         self.window = window
         self.page_views = defaultdict(list) # { page_id: [timestamps] }
         self.total_views = []
+        self.heap = []
 
     def record(self, page_id, ts):
         self.page_views[page_id].append(ts)
         insort(self.total_views, ts)
-
+        
     def count_in_window(self, page_id, now):
         ts = self.page_views.get(page_id, [])
         return len(ts) - bisect_left(ts, now - self.window)
 
     def top_k(self, k, now):
-        heap = []
+        # return sorted(self.heap, reverse=True)
+        res = []
         for page_id in self.page_views:
-            heappush(heap, (self.count_in_window(page_id, now), page_id))
-            if len(heap) > k:
-                heappop(heap)
-        return sorted(heap, reverse=True)
+            number_of_visits = self.count_in_window(page_id, now)
+            res.append((number_of_visits, page_id))
+        return sorted(res, reverse=True)[0:k-1]
+
 
     def total_in_window(self, now):
         return len(self.total_page_views) - bisect_left(self.total_page_views, now - self.window)
